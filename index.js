@@ -103,7 +103,7 @@ ${messageText}
     const response = await axios.post(
         "https://openrouter.ai/api/v1/chat/completions",
         {
-            model: "qwen/qwen-2.5-32b-instruct",
+            model: "mistralai/mixtral-8x7b-instruct",
             messages: [
                 { role: "system", content: "Ты участник чата." },
                 { role: "user", content: prompt }
