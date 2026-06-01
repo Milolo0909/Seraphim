@@ -167,6 +167,8 @@ bot.on('message', async (msg) => {
     try {
         const reply = await generateReply(chatId, text);
 
+        console.log("RAW AI:", reply);
+
         botState = "idle";
         lastResponseTime = Date.now() - start;
         logStatus(`💬 ответ за ${lastResponseTime}ms`);
