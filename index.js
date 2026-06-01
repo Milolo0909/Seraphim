@@ -100,18 +100,24 @@ ${messageText}
 Ответ:
 `;
 
-    const response = await timeoutPromise(
-        axios.post('http://localhost:11434/api/generate', {
-            model: 'mistral',
-            prompt,
-            stream: false,
-            temperature: 0.7,
-            top_p: 0.6
-        }),
-        60000 // 60 секунд
+    cconst response = await axios.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+            model: "meta-llama/llama-3.1-8b-instruct",
+            messages: [
+                { role: "system", content: "Ты участник чата." },
+                { role: "user", content: prompt }
+            ]
+        },
+        {
+            headers: {
+                "Authorization": `Bearer ${process.env.OPENROUTER_KEY}`,
+                "Content-Type": "application/json"
+            }
+        }
     );
 
-    return response.data.response.trim();
+    return response.data.choices[0].message.content.trim();
 }
 
 bot.on('message', async (msg) => {
