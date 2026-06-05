@@ -128,6 +128,7 @@ ${messageText}
         console.error("AI ERROR:", err?.response?.data || err.message);
         return "Хуйня";
     }
+}
 
 bot.on('message', async (msg) => {
 
