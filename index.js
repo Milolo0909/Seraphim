@@ -100,19 +100,34 @@ ${messageText}
 Ответ:
 `;
     
-     const response = await timeoutPromise(
-        axios.post('http://localhost:11434/api/generate', {
-            model: 'mistral',
-            prompt,
-            stream: false,
-            temperature: 0.7,
-            top_p: 0.6
-        }),
-        60000 // 60 секунд
-    );
+     try {
+        const response = await axios.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+                model: "openai/gpt-oss-120b:free",
+                messages: [
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ],
+                temperature: 0.8,
+                max_tokens: 500
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ${process.env.OPENROUTER_KEY}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-    return response.data.response.trim();
-}
+        return response.data.choices[0].message.content.trim();
+
+    } catch (err) {
+        console.error("AI ERROR:", err?.response?.data || err.message);
+        return "Хуйня";
+    }
 
 bot.on('message', async (msg) => {
 
